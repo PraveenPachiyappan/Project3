@@ -1,0 +1,55 @@
+package project;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class patient extends hospital {
+	public String insertpatient(String p, int a, String sp,String gr,String dt,String at) {
+		String r=" ";
+		try {
+			String query = "insert into  patientinfo(patientname,age,speciality,gender,date,appointmenttime) "
+					+ " values(?,?,?,?,?,?)";
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setString(1, p);
+			pst.setInt(2, a);
+			pst.setString(3, sp);
+			pst.setString(4,gr);
+			pst.setString(5,dt);
+			pst.setString(6,at);
+			int n1 = pst.executeUpdate();
+			r=((n1 >= 1) ? "Registered" : "Not Registered");
+		} catch (SQLException e) {
+			System.out.println("Error :" + e);
+		}
+		return r;
+	}
+   public void bill(String p, int a, String sp,String gr,String dt,String at) {
+	   try { 
+	   System.out.println("SIMS HOSPITAL \n 3/23,jp Nager,Salem-636306.\n contact no: 9597232497 \n 04423-277385 " );
+	   System.out.println("\t \t BILL RECEIPT ");
+	   System.out.println("\t \t Patient Name :" + p);
+	   System.out.println("\t \t Patient Age :" + a);
+	   System.out.println("\t \t Gender :" + gr);
+	   System.out.println("\t \t Date/Time :" + dt+"/"+at);
+	   System.out.println("\t \t speciality :" + sp);
+	   
+			String query = "select doctorname,fees from doctorinfo where spciality=?";
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setString(1, sp);
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {				
+				String us = rs.getString(1);				
+				int fs = rs.getInt(2);
+				System.out.println(" \t \t Doctor Name :"+us);
+				System.out.println("\t \t Doctor Fees :"+fs);
+				System.out.println("");
+				System.out.println("\t \t Total Amount :"+fs);
+				System.out.println("");
+			}
+		} catch (SQLException e) {
+			System.out.println("Error :" + e);
+		}
+   }
+  
+}
